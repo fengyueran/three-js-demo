@@ -12,7 +12,7 @@ const Container = styled.div`
 const Canvas = () => (
   <Container>
     {Routes.map(({ path, component }) => (
-      <Route path={path} component={component} />
+      <Route key={path} path={path} component={component} />
     ))}
   </Container>
 );
