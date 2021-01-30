@@ -80,7 +80,7 @@ const FirstScene = () => {
 
     function render() {
       stats.update();
-      cube.position.x += 1;
+      // cube.position.x += 1;
       requestAnimationFrame(render);
       webGLRenderer.render(scene, camera);
     }

@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module';
+import { DragControls } from './drag-controls';
 
 import styled from 'styled-components';
 
@@ -23,7 +24,7 @@ const initStats = (node: HTMLElement) => {
   return stats;
 };
 
-const SelectObject = () => {
+const DragObject = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -74,6 +75,8 @@ const SelectObject = () => {
     console.log(scene.children);
 
     container.appendChild(webGLRenderer.domElement);
+    const controls = new DragControls([cube, sphere], camera, webGLRenderer.domElement);
+    (controls as any).addEventListener('drag', render);
 
     function render() {
       stats.update();
@@ -95,17 +98,13 @@ const SelectObject = () => {
     const selectObj = (mouse: { x: number; y: number }) => {
       //新建一个三维单位向量 假设z方向就是0.5
       //根据照相机，把这个向量转换到视点坐标系
-      // const vector = new THREE.Vector3(mouse.x, mouse.y, 0.5).unproject(camera);
+      const vector = new THREE.Vector3(mouse.x, mouse.y, 0.5).unproject(camera);
 
-      // //在视点坐标系中形成射线,射线的起点向量是照相机， 射线的方向向量是照相机到点击的点，这个向量应该归一标准化。
-      // const raycaster = new THREE.Raycaster(
-      //   camera.position,
-      //   vector.sub(camera.position).normalize(),
-      // );
-
-      const raycaster = new THREE.Raycaster();
-      // 通过摄像机和鼠标位置更新射线
-      raycaster.setFromCamera(mouse, camera);
+      //在视点坐标系中形成射线,射线的起点向量是照相机， 射线的方向向量是照相机到点击的点，这个向量应该归一标准化。
+      const raycaster = new THREE.Raycaster(
+        camera.position,
+        vector.sub(camera.position).normalize(),
+      );
 
       //射线和模型求交，选中一系列直线
       const intersects = raycaster.intersectObjects(scene.children);
@@ -127,4 +126,4 @@ const SelectObject = () => {
 
   return <Container ref={containerRef} />;
 };
-export { SelectObject };
+export { DragObject };

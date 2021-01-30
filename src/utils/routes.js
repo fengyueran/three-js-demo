@@ -14,4 +14,6 @@ export const Routes = [
   { path: LESSONS.C10_02, component: chapter10.BumpMap },
   { path: LESSONS.C11_07, component: chapter11.ShaderPassCustom },
   { path: LESSONS.other_01, component: other.SelectObject },
+  { path: LESSONS.other_02, component: other.DragObject },
+  { path: LESSONS.other_03, component: other.ObjOutline },
 ];

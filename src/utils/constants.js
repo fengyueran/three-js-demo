@@ -11,4 +11,6 @@ export const LESSONS = {
   C11_07: '/07-shaderpass-custom',
 
   other_01: '/01-select-object',
+  other_02: '/02-drag-object',
+  other_03: '/03-obj-outline',
 };

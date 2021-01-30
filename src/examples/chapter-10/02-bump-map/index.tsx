@@ -137,7 +137,7 @@ const BumpMap = () => {
       stats.update();
       if (controls.rotate) {
         cube1.rotation.y -= 0.01;
-        cube2.rotation.y += 0.01;
+        // cube2.rotation.y += 0.01;
       }
       requestAnimationFrame(render);
       webGLRenderer.render(scene, camera);

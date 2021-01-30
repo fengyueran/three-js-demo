@@ -54,8 +54,16 @@ const treeData = [
     title: '其他',
     children: [
       {
-        title: '  01-select-object',
+        title: '01-select-object',
         value: LESSONS.other_01,
+      },
+      {
+        title: '02-drag-object',
+        value: LESSONS.other_02,
+      },
+      {
+        title: '03-obj-outline',
+        value: LESSONS.other_03,
       },
     ],
   },
