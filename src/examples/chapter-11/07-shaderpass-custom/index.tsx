@@ -1,29 +1,57 @@
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
+import Stats from 'three/examples/jsm/libs/stats.module';
+import { SceneUtils } from 'three/examples/jsm/utils/SceneUtils';
+
 import styled from 'styled-components';
 
-import metalRust from 'src/assets/textures/general/metal-rust.jpg';
-import floorWood from 'src/assets/textures/general/floor-wood.jpg';
-import brickWall from 'src/assets/textures/general/brick-wall.jpg';
+import earthImg from 'src/assets/textures/planets/Earth.png';
+import earthSpecImg from 'src/assets/textures/planets/EarthSpec.png';
+import earthNormalImg from 'src/assets/textures/planets/EarthNormal.png';
+
 
 const Container = styled.div`
   height: 100%;
   border-right: 1px solid #e8e8e8;
 `;
 
-const createMesh = (geom: THREE.BufferGeometry, imageFile: string) => {
-  const texture = new THREE.TextureLoader().load(imageFile);
-  const mat = new THREE.MeshPhongMaterial();
-  mat.map = texture;
+const initStats = (node: HTMLElement) => {
+  const stats = Stats();
+  stats.setMode(0); // 0: fps, 1: ms
 
-  const mesh = new THREE.Mesh(geom, mat);
+  // Align top-left
+  stats.domElement.style.position = 'absolute';
+  stats.domElement.style.left = '285px';
+  stats.domElement.style.top = '0px';
+
+  node.appendChild(stats.domElement);
+
+  return stats;
+};
+
+const createMesh = (geom: THREE.BufferGeometry) => {
+  const planetTexture = new THREE.TextureLoader().load(earthImg);
+  const specularTexture = new THREE.TextureLoader().load(earthSpecImg);
+  const normalTexture = new THREE.TextureLoader().load(earthNormalImg);
+
+  const planetMaterial = new THREE.MeshPhongMaterial();
+  planetMaterial.specularMap = specularTexture;
+  planetMaterial.specular = new THREE.Color(0x4444aa);
+
+  planetMaterial.normalMap = normalTexture;
+  planetMaterial.map = planetTexture
+
+
+   // create a multimaterial
+   var mesh = SceneUtils.createMultiMaterialObject(geom, [planetMaterial])
   return mesh;
 };
 
-const BasicTexture = () => {
+const ShaderPassCustom = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const stats = initStats(containerRef.current!);
     // create a scene, that will hold all our elements such as objects, cameras and lights.
     const scene = new THREE.Scene();
 
@@ -42,16 +70,12 @@ const BasicTexture = () => {
     webGLRenderer.setSize(container.clientWidth, container.clientHeight);
     webGLRenderer.shadowMap.enabled = true;
 
-    const polyhedron = createMesh(new THREE.IcosahedronGeometry(5, 0), metalRust);
-    polyhedron.position.x = 12;
-    scene.add(polyhedron);
+    const cube1 = createMesh(new THREE.SphereGeometry(10, 40, 40));
+    cube1.rotation.y = -0.5;
+    cube1.position.x = 12;
+    scene.add(cube1);
 
-    const sphere = createMesh(new THREE.SphereGeometry(5, 20, 20), floorWood);
-    scene.add(sphere);
 
-    const cube = createMesh(new THREE.BoxGeometry(5, 5, 5), brickWall);
-    cube.position.x = -12;
-    scene.add(cube);
 
     // position and point the camera to the center of the scene
     camera.position.x = 0;
@@ -65,18 +89,18 @@ const BasicTexture = () => {
 
     const light = new THREE.DirectionalLight();
     light.position.set(0, 30, 20);
+    light.intensity = 1.2;
     scene.add(light);
 
     container.appendChild(webGLRenderer.domElement);
-    let step = 0;
+
+    // setup the control gui
+
+
+
+
     function render() {
-      polyhedron.rotation.y = step += 0.01;
-      polyhedron.rotation.x = step;
-      cube.rotation.y = step;
-      cube.rotation.x = step;
-      sphere.rotation.y = step;
-      sphere.rotation.x = step;
-      // render using requestAnimationFrame
+      stats.update();
       requestAnimationFrame(render);
       webGLRenderer.render(scene, camera);
     }
@@ -85,4 +109,4 @@ const BasicTexture = () => {
 
   return <Container ref={containerRef} />;
 };
-export { BasicTexture };
+export { ShaderPassCustom };
