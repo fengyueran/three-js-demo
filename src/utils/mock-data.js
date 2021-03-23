@@ -65,6 +65,10 @@ const treeData = [
         title: '03-obj-outline',
         value: LESSONS.other_03,
       },
+      {
+        title: '04-plane-clip',
+        value: LESSONS.other_04,
+      },
     ],
   },
 ];

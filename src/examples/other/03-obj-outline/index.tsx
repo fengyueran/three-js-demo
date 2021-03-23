@@ -66,10 +66,10 @@ const ObjOutline = () => {
     }
 
     // position and point the camera to the center of the scene
-    camera.position.x = 0;
-    camera.position.y = 62;
-    camera.position.z = 68;
-    camera.lookAt(new THREE.Vector3(0, 0, 0));
+    camera.position.x = -80;
+    camera.position.y = 0;
+    camera.position.z = 0;
+    camera.lookAt(scene.position);
 
     const light = new THREE.DirectionalLight();
     light.position.set(0, 30, 20);

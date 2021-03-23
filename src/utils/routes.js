@@ -16,4 +16,5 @@ export const Routes = [
   { path: LESSONS.other_01, component: other.SelectObject },
   { path: LESSONS.other_02, component: other.DragObject },
   { path: LESSONS.other_03, component: other.ObjOutline },
+  { path: LESSONS.other_04, component: other.PlaneClip },
 ];

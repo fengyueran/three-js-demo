@@ -13,4 +13,5 @@ export const LESSONS = {
   other_01: '/01-select-object',
   other_02: '/02-drag-object',
   other_03: '/03-obj-outline',
+  other_04: '/04-plane-clip',
 };
