@@ -18,7 +18,7 @@ const LoadSTL = () => {
     const scene = new THREE.Scene();
 
     const container = containerRef.current!;
-    // create a camera, which defines where we're looking at.
+    // 近平面和远平面主要用于确定要渲染的顶点范围
     const camera = new THREE.PerspectiveCamera(
       45,
       container.clientWidth / container.clientHeight,
@@ -31,31 +31,40 @@ const LoadSTL = () => {
     webGLRenderer.setClearColor(new THREE.Color(0x000));
     webGLRenderer.setSize(container.clientWidth, container.clientHeight);
 
-    // position and point the camera to the center of the scene
-    camera.position.x = 150;
-    camera.position.y = 150;
-    camera.position.z = 150;
-    camera.lookAt(new THREE.Vector3(0, 40, 0));
+    const cubeGeo = new THREE.BoxGeometry(20, 20, 20);
+    const cubeMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
+    const cube = new THREE.Mesh(cubeGeo, cubeMaterial);
+    cube.position.set(-50, 0, 0);
+    scene.add(cube);
+
+    // 相机左移物体右移
+    camera.position.x = 0;
+    camera.position.y = 0;
+    camera.position.z = 300;
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     // add spotlight for the shadows
     var spotLight = new THREE.SpotLight(0xffffff);
     spotLight.position.set(150, 150, 150);
     scene.add(spotLight);
 
-    // model from http://www.thingiverse.com/thing:69709
+    // // model from http://www.thingiverse.com/thing:69709
     const loader = new STLLoader();
     let mesh: THREE.Mesh;
     loader.load(stl, function (geometry) {
-      console.log(geometry);
       var mat = new THREE.MeshLambertMaterial({ color: 0x7777ff });
       mesh = new THREE.Mesh(geometry, mat);
-      mesh.rotation.x = -0.5 * Math.PI;
-      mesh.scale.set(0.6, 0.6, 0.6);
+
+      //模型没有居中，可能是模型局部坐标的原点不是在模型中心，像在左下角
+      const box = new THREE.Box3().setFromObject(mesh);
+      const center = new THREE.Vector3();
+      box.getCenter(center);
+      mesh.position.sub(center); // center the model
+
       scene.add(mesh);
     });
 
     container.appendChild(webGLRenderer.domElement);
-
     function render() {
       if (mesh) {
         mesh.rotation.z += 0.006;
