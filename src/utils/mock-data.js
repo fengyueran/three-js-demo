@@ -26,6 +26,10 @@ const treeData = [
         title: '09-load-stl',
         value: LESSONS.C8_09,
       },
+      {
+        title: '13-load-ply',
+        value: LESSONS.C8_13,
+      },
     ],
   },
   {

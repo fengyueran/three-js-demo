@@ -52,14 +52,14 @@ const PlaneClip = () => {
 
     // 开启模型对象的局部剪裁平面功能
     // 如果不设置为true，设置剪裁平面的模型不会被剪裁
-    webGLRenderer.localClippingEnabled = true;
+    // webGLRenderer.localClippingEnabled = true;
 
     // Plane作为元素创建数组，Plane的方向法向量、位置根据需要随意定义
     var PlaneArr = [
       //创建一个垂直x轴的平面，方向沿着x轴正方向，沿着x轴负方向平移50,
       new THREE.Plane(new THREE.Vector3(1, 0, 0), 50),
       //创建一个垂直x轴的平面，方向沿着x轴负方向，沿着x轴正方向平移50,
-      new THREE.Plane(new THREE.Vector3(-1, 0, 0), 50),
+      // new THREE.Plane(new THREE.Vector3(-1, 0, 0), 50),
 
       // 垂直y轴的平面
       // new THREE.Plane(new THREE.Vector3(0, -1, 0), 0),
@@ -67,21 +67,21 @@ const PlaneClip = () => {
       // new THREE.Plane(new THREE.Vector3(0, 0, -1), 0),
     ];
     // 通过PlaneHelper辅助可视化显示剪裁平面Plane
-    var helper1 = new THREE.PlaneHelper(PlaneArr[0], 300, 0xffff00);
+    var helper1 = new THREE.PlaneHelper(PlaneArr[0], 300, 0xffffff);
     scene.add(helper1);
-
-    var helpe2 = new THREE.PlaneHelper(PlaneArr[1], 300, 0xffffff);
-    scene.add(helpe2);
+    // var helpe2 = new THREE.PlaneHelper(PlaneArr[1], 300, 0xffffff);
+    // scene.add(helpe2);
 
     const material = new THREE.MeshLambertMaterial({
       color: 0xff0000, // 设置材质的剪裁平面的属性
       side: THREE.DoubleSide,
-      // clippingPlanes: PlaneArr,
-      clipIntersection: true,
+      clippingPlanes: PlaneArr,
+      // clipIntersection: true,
     });
     const cube = new THREE.Mesh(cubeGeo, material);
 
-    webGLRenderer.clippingPlanes = PlaneArr;
+    //全局裁剪
+    // webGLRenderer.clippingPlanes = PlaneArr;
 
     // position the cube
     cube.position.x = 0;
@@ -91,9 +91,9 @@ const PlaneClip = () => {
     scene.add(cube);
 
     // position and point the camera to the center of the scene
-    camera.position.x = 120;
+    camera.position.x = 200;
     camera.position.y = 200;
-    camera.position.z = 550;
+    camera.position.z = 250;
     camera.lookAt(scene.position);
 
     // add spotlight for the shadows
@@ -107,7 +107,8 @@ const PlaneClip = () => {
 
     container.appendChild(webGLRenderer.domElement);
     (window as any).plane1 = PlaneArr[0];
-    (window as any).plane2 = PlaneArr[1];
+    // (window as any).plane2 = PlaneArr[1];
+    (window as any).webGLRenderer = webGLRenderer;
     function render() {
       stats.update();
       requestAnimationFrame(render);

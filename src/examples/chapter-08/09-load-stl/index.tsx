@@ -59,7 +59,8 @@ const LoadSTL = () => {
       const box = new THREE.Box3().setFromObject(mesh);
       const center = new THREE.Vector3();
       box.getCenter(center);
-      mesh.position.sub(center); // center the model
+      // geometry.center();// center the model
+      mesh.position.sub(center); // center the model同geometry.center();
 
       scene.add(mesh);
     });
