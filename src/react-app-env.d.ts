@@ -7,3 +7,7 @@ declare module '*.stl' {
 declare module '*.ply' {
   export default any;
 }
+
+declare module '*.vtp' {
+  export default any;
+}
