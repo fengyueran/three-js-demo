@@ -14,7 +14,7 @@ export const createMesh = (cldata, geometry, textureA) => {
   geometry.computeBoundingBox();
   geometry.boundingBox.getCenter(offset);
   geometry.OFFSET = offset;
-  // geometry.center();
+  geometry.center();
 
   const heartMat = new THREE.ShaderMaterial({
     uniforms: {
